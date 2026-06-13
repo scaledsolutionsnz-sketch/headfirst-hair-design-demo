@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-NZ">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tell Us More | Headfirst Hair Design</title>
+<meta name="description" content="Share your feedback privately with Headfirst Hair Design." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231d1719'/%3E%3Ctext x='50' y='70' font-family='Arial,sans-serif' font-size='58' font-weight='bold' text-anchor='middle' fill='%23e1496a'%3EH%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<nav class="nav scrolled">
+  <a href="index.html" class="nav__brand">Headfirst Hair<span class="dot">.</span></a>
+  <div class="nav__links">
+    <a href="index.html#services">Services</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#reviews">Reviews</a>
+    <a href="tel:+6433497544" class="nav__phone">03 349 7544</a>
+    <a href="index.html#contact" class="btn btn--primary nav__cta">Book Now</a>
+  </div>
+</nav>
+
+<main class="review-wrap">
+  <div class="review-card" style="text-align:left;">
+    <span class="eyebrow">Private feedback</span>
+    <h1 style="margin-top:14px;">Thanks for being honest.</h1>
+    <p>We'd genuinely like to put it right. Tell us what happened and we'll personally follow up — this comes straight to us and isn't posted publicly.</p>
+
+    <form id="feedbackForm" action="https://formsubmit.co/traceyuren4@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="Private feedback — Headfirst Hair Design" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_template" value="table" />
+      <div class="field">
+        <label for="name">Your name</label>
+        <input id="name" name="name" type="text" placeholder="Jane Smith" required />
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@email.com" required />
+      </div>
+      <div class="field">
+        <label for="rating">Your rating</label>
+        <input id="rating" name="rating" type="text" readonly />
+      </div>
+      <div class="field">
+        <label for="feedback">What could we have done better?</label>
+        <textarea id="feedback" name="feedback" placeholder="Tell us what happened so we can make it right." required></textarea>
+      </div>
+      <button type="submit" class="btn btn--primary btn--block">Send feedback</button>
+    </form>
+
+    <div id="successState" class="success-box" style="display:none;">
+      Thank you — your feedback has been sent straight to Tracey. We'll be in touch soon.
+    </div>
+  </div>
+</main>
+
+<script>
+  // Pre-fill rating from URL (?rating=X)
+  var params = new URLSearchParams(window.location.search);
+  var rating = params.get("rating");
+  var ratingField = document.getElementById("rating");
+  if (rating && /^[1-5]$/.test(rating)) {
+    ratingField.value = rating + " out of 5 stars";
+  } else {
+    ratingField.value = "Not specified";
+  }
+
+  // Show success state after submit (FormSubmit AJAX endpoint)
+  var form = document.getElementById("feedbackForm");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var data = new FormData(form);
+    fetch("https://formsubmit.co/ajax/traceyuren4@gmail.com", {
+      method: "POST",
+      headers: { "Accept": "application/json" },
+      body: data
+    }).then(function () {
+      form.style.display = "none";
+      document.getElementById("successState").style.display = "block";
+    }).catch(function () {
+      // Fallback: submit normally
+      form.removeEventListener("submit", arguments.callee);
+      form.submit();
+    });
+  });
+</script>
+</body>
+</html>
